@@ -24,7 +24,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.center()
         window.setFrameAutosaveName("Main Window")
 
-        window.contentView = NSHostingView(rootView: ContentView())
+        window.title = "Fluency"
+        let contentView: NSView = window.contentView!
+        let customTextView = CustomTextView()
+        contentView.addSubview(customTextView)
+        customTextView.translatesAutoresizingMaskIntoConstraints = false
+        customTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        customTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        customTextView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 40).isActive = true
+        customTextView.widthAnchor.constraint(equalToConstant: 500).isActive = true
+        customTextView.heightAnchor.constraint(equalToConstant: 500).isActive = true
+        let bottomConstraint = customTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        bottomConstraint.priority = .required
+        bottomConstraint.isActive = true
+        window.setContentSize(customTextView.frame.size)
 
         window.makeKeyAndOrderFront(nil)
     }

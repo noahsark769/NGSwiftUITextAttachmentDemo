@@ -12,6 +12,7 @@
 		A16BC26F232EC92A001575A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A16BC26E232EC92A001575A7 /* Assets.xcassets */; };
 		A16BC272232EC92A001575A7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A16BC271232EC92A001575A7 /* Preview Assets.xcassets */; };
 		A16BC275232EC92A001575A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A16BC273232EC92A001575A7 /* Main.storyboard */; };
+		A16BC27E232EC99A001575A7 /* CustomTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16BC27D232EC99A001575A7 /* CustomTextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,7 @@
 		A16BC274232EC92A001575A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A16BC276232EC92A001575A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A16BC277232EC92A001575A7 /* NGSwiftUITextAttachmentDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NGSwiftUITextAttachmentDemo.entitlements; sourceTree = "<group>"; };
+		A16BC27D232EC99A001575A7 /* CustomTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				A16BC276232EC92A001575A7 /* Info.plist */,
 				A16BC277232EC92A001575A7 /* NGSwiftUITextAttachmentDemo.entitlements */,
 				A16BC270232EC92A001575A7 /* Preview Content */,
+				A16BC27D232EC99A001575A7 /* CustomTextView.swift */,
 			);
 			path = NGSwiftUITextAttachmentDemo;
 			sourceTree = "<group>";
@@ -147,6 +150,7 @@
 			files = (
 				A16BC26D232EC926001575A7 /* ContentView.swift in Sources */,
 				A16BC26B232EC926001575A7 /* AppDelegate.swift in Sources */,
+				A16BC27E232EC99A001575A7 /* CustomTextView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

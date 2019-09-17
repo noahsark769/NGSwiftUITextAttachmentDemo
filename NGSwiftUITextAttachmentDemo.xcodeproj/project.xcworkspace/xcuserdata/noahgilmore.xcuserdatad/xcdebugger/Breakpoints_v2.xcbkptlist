@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "C22CC597-F316-4448-BB19-FCA855E92BAA"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "16CDA270-74EF-47F5-8C42-82169B2F5345"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "drawGlyphs(forGlyphRange:at:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6496459B-8B86-4CFA-9637-CE7C9DFC4791"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "drawGlyphs(forGlyphRange:at:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F6236CEE-1D40-4CB9-A67E-828BC016C2B0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "cellFrame(for:proposedLineFragment:glyphPosition:characterIndex:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "70C54504-8CB2-487D-8B2E-D234A394FE7B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "cellFrame(for:proposedLineFragment:glyphPosition:characterIndex:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8E0164B4-175D-4C04-ACCD-1065F4F76294"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
+            landmarkName = "init(data:ofType:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AA608D32-0075-406A-80A5-168764781082"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "236"
+            endingLineNumber = "236"
+            landmarkName = "textStorage(_:didProcessEditing:range:changeInLength:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "AA608D32-0075-406A-80A5-168764781082 - 9b199d8ca6ba2e90"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "NGSwiftUITextAttachmentDemo.CustomTextView.textStorage(_: __C.NSTextStorage, willProcessEditing: __C.NSTextStorageEditActions, range: __C._NSRange, changeInLength: Swift.Int) -&gt; ()"
+                  moduleName = "NGSwiftUITextAttachmentDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/noahgilmore/code/NGSwiftUITextAttachmentDemo/NGSwiftUITextAttachmentDemo/CustomTextView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "257"
+                  endingLineNumber = "257"
+                  offsetFromSymbolStart = "270">
+               </Location>
+               <Location
+                  uuid = "AA608D32-0075-406A-80A5-168764781082 - 909a7518391f4113"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Any&gt;, __C._NSRange, Swift.UnsafeMutablePointer&lt;ObjectiveC.ObjCBool&gt;) -&gt; () in NGSwiftUITextAttachmentDemo.CustomTextView.textStorage(_: __C.NSTextStorage, willProcessEditing: __C.NSTextStorageEditActions, range: __C._NSRange, changeInLength: Swift.Int) -&gt; ()"
+                  moduleName = "NGSwiftUITextAttachmentDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/noahgilmore/code/NGSwiftUITextAttachmentDemo/NGSwiftUITextAttachmentDemo/CustomTextView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "258"
+                  endingLineNumber = "258"
+                  offsetFromSymbolStart = "207">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
