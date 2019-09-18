@@ -14,8 +14,8 @@
             filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
             landmarkName = "drawGlyphs(forGlyphRange:at:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
             landmarkName = "drawGlyphs(forGlyphRange:at:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,24 +46,8 @@
             filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
-            landmarkName = "cellFrame(for:proposedLineFragment:glyphPosition:characterIndex:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "70C54504-8CB2-487D-8B2E-D234A394FE7B"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
             landmarkName = "cellFrame(for:proposedLineFragment:glyphPosition:characterIndex:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -72,16 +56,16 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "8E0164B4-175D-4C04-ACCD-1065F4F76294"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
-            landmarkName = "init(data:ofType:)"
-            landmarkType = "7">
+            startingLineNumber = "147"
+            endingLineNumber = "147"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -94,9 +78,9 @@
             filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "236"
-            endingLineNumber = "236"
-            landmarkName = "textStorage(_:didProcessEditing:range:changeInLength:)"
+            startingLineNumber = "355"
+            endingLineNumber = "355"
+            landmarkName = "textStorage(_:willProcessEditing:range:changeInLength:)"
             landmarkType = "7">
             <Locations>
                <Location
