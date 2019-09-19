@@ -181,19 +181,14 @@ final class AttachmentTypeWrapper: NSObject, NSPasteboardWriting {
 
 final class TextViewDelegate: NSObject, NSTextViewDelegate {
     func textView(_ view: NSTextView, writablePasteboardTypesFor cell: NSTextAttachmentCellProtocol, at charIndex: Int) -> [NSPasteboard.PasteboardType] {
-        print("Calling writeablePasteboardTypes with cell \(cell)")
         return [.fileContents]
     }
 
     func textView(_ view: NSTextView, write cell: NSTextAttachmentCellProtocol, at charIndex: Int, to pboard: NSPasteboard, type: NSPasteboard.PasteboardType) -> Bool {
-        print("Writing some cell, not sure if gunna do it: \(cell), \(type)")
-//        let type = NSPasteboard.PasteboardType(rawValue: "fluency-text-attachment-cell")
         if let cell = cell as? ViewAttachmentCell, type == .fileContents {
             print("Writing cell content as file wrapper...")
-//            let result = pboard.writeObjects([AttachmentTypeWrapper(attachmentType: cell.content)])
             let result = pboard.write(cell.content.asFileWrapper())
             print("Writing result: \(result)")
-            cell.attachedView.removeFromSuperview()
             return true
         }
         return true
@@ -211,6 +206,7 @@ final class TextViewDelegate: NSObject, NSTextViewDelegate {
                     cell.attachedView.removeFromSuperview()
                 }
             }
+            textView.textStorage?.removeAttribute(.attachment, range: affectedCharRange)
         }
         return true
     }
@@ -240,17 +236,7 @@ final class CustomTextView: NSTextView {
         attachment.attachmentCell = ViewAttachmentCell(content: content)
         let string = NSAttributedString(attachment: attachment)
         self.textStorage?.append(string)
-
-//        self.textStorage?.append(NSAttributedString(string: "Hello world", attributes: [NSAttributedString.Key.foregroundColor: NSColor.labelColor]))
-//
-//        let content2: AttachmentType = .square(number: 6)
-//        let attachment2 = NSTextAttachment(fileWrapper: content.asFileWrapper())
-//        attachment2.attachmentCell = ViewAttachmentCell(content: content)
-//        let string2 = NSAttributedString(attachment: attachment2)
-//        self.textStorage?.append(string2)
-
         self.typingAttributes = [.foregroundColor: NSColor.labelColor]
-        print("Readable types: \(self.readablePasteboardTypes)")
     }
 
     required init?(coder: NSCoder) {
@@ -270,32 +256,8 @@ final class CustomTextView: NSTextView {
         super.drawInsertionPoint(in: NSRect(x: rect.origin.x, y: rect.origin.y + (rect.size.height - constant), width: rect.size.width, height: constant), color: color, turnedOn: flag)
     }
 
-    override func readRTFD(fromFile path: String) -> Bool {
-        print("Reading RTFD from path: \(path)")
-        return super.readRTFD(fromFile: path)
-    }
-
-    override func writeRTFD(toFile path: String, atomically flag: Bool) -> Bool {
-        print("Writing RTFD to path: \(path)")
-        return super.writeRTFD(toFile: path, atomically: flag)
-    }
-
     override func writeSelection(to pboard: NSPasteboard, type: NSPasteboard.PasteboardType) -> Bool {
-        print("Writing selection of type \(type) to pasteboard...")
         if type == .fileContents {
-            print("-- Trying to write file contents, selection is: \(self.selectedRange())")
-//            self.textStorage?.enumerateAttribute(.attachment, in: self.selectedRange(), options: []) { value, range, stop in
-//                if let attachment = value as? NSTextAttachment {
-//                    print("Found an attachment...")
-//                    if let cell = attachment.attachmentCell as? ViewAttachmentCell {
-//                        print("Writing cell content as file wrapper...")
-//            //            let result = pboard.writeObjects([AttachmentTypeWrapper(attachmentType: cell.content)])
-//                        let result = pboard.write(cell.content.asFileWrapper())
-//                        print("Writing result: \(result)")
-//                        cell.attachedView.removeFromSuperview()
-//                    }
-//                }
-//            }
             do {
                 let fileWrapper = try self.textStorage!.fileWrapper(from: self.selectedRange(), documentAttributes: [.documentType: NSAttributedString.DocumentType.rtfd])
                 let uuid = UUID()
@@ -312,36 +274,8 @@ final class CustomTextView: NSTextView {
 
     override func readSelection(from pboard: NSPasteboard, type: NSPasteboard.PasteboardType) -> Bool {
         print("Reading selection of type \(type) from pasteboard...")
-//        if let objects = pboard.readObjects(forClasses: [AttachmentTypeWrapper.self], options: [:]) {
-//            for object in objects {
-//                guard let wrapper = object as? AttachmentTypeWrapper else { continue }
-//                let attachment = NSTextAttachment()
-//                attachment.attachmentCell = ViewAttachmentCell(content: wrapper.attachmentType)
-//                self.textStorage?.insert(NSAttributedString(attachment: attachment), at: self.selectedRange().location)
-//            }
-//            return true
-//        }
         if type == NSPasteboard.PasteboardType.fileContents {
-            print("Reading a file contents...")
-//            if let wrapper = pboard.readFileWrapper() {
-//                print("Found a file wrapper! \(wrapper)")
-//                let decoder = JSONDecoder()
-//                if let content = try? decoder.decode(AttachmentType.self, from: wrapper.regularFileContents!) {
-//                    print("Decoded! \(content)")
-//                    let attachment = NSTextAttachment(fileWrapper: wrapper)
-//                    attachment.attachmentCell = ViewAttachmentCell(content: content)
-//                    self.textStorage?.insert(NSAttributedString(attachment: attachment), at: self.selectedRange().location)
-//                    return true
-//                }
-//            } else {
-//                return super.readSelection(from: pboard, type: type)
-//            }
             let wrapper = pboard.readFileWrapper()!
-//            print("We got a wrapper! isfile: \(wrapper.isRegularFile), isDir: \(wrapper.isDirectory), isSym: \(wrapper.isSymbolicLink)")
-//            if wrapper.isDirectory {
-//                print("It was a directory, here are the children: \(wrapper.fileWrappers)")
-//            }
-
             guard let attributedString = NSAttributedString(rtfdFileWrapper: wrapper, documentAttributes: nil) else {
                 print("Error!! Could not create attributed string")
                 return false
@@ -349,47 +283,28 @@ final class CustomTextView: NSTextView {
             self.textStorage?.insert(attributedString, at: self.selectedRange().location)
             return true
         }
-//        } else if type == NSPasteboard.PasteboardType(rawValue: "public.utf8-plain-text") {
-            return super.readSelection(from: pboard, type: type)
-//        }
-//        return false
-//        if let wrapper = pboard.readFileWrapper() {
-//            print("Found a file wrapper! \(wrapper)")
-//            let decoder = JSONDecoder()
-//            if let content = try? decoder.decode(AttachmentType.self, from: wrapper.regularFileContents!) {
-//                print("Decoded! \(content)")
-//                let attachment = NSTextAttachment(fileWrapper: wrapper)
-//                attachment.attachmentCell = ViewAttachmentCell(content: content)
-//                self.textStorage?.insert(NSAttributedString(attachment: attachment), at: self.selectedRange().location)
-//                return true
-//            }
-//        }
-//        return super.readSelection(from: pboard, type: type)
+        return super.readSelection(from: pboard, type: type)
     }
 }
 
 extension CustomTextView: NSTextStorageDelegate {
     func textStorage(_ textStorage: NSTextStorage, willProcessEditing editedMask: NSTextStorageEditActions, range editedRange: NSRange, changeInLength delta: Int) {
-        print("Edited range: \(editedRange)")
-        print(self.textStorage)
         textStorage.enumerateAttribute(.attachment, in: NSMakeRange(0, textStorage.length), options: .longestEffectiveRangeNotRequired) { value, range, stop in
             if let attachment = value as? NSTextAttachment {
                 if !(attachment.attachmentCell is ViewAttachmentCell),
                     let wrapper = attachment.fileWrapper,
                     let preferredFilename = wrapper.preferredFilename,
                     preferredFilename.contains(".fluencyattachment") {
-                    print("Found some shit that I'm pretty sure is a fluency attachment!")
                     let decoder = JSONDecoder()
                     let content = try! decoder.decode(AttachmentType.self, from: wrapper.regularFileContents!)
                     let attachmentCell = ViewAttachmentCell(content: content)
                     attachment.attachmentCell = attachmentCell
-                    if attachmentCell.attachedView.superview == nil {
-                        self.addSubview(attachmentCell.attachedView)
-                    }
+                    print("Adding subview from willProcessEditing with deserialization")
+                    self.addSubview(attachmentCell.attachedView)
                 } else if let cell = attachment.attachmentCell as? ViewAttachmentCell {
-                    print("-- Found a fancy ViewAttachmentCell at \(range)")
-                    print("Cell: \(attachment.attachmentCell)")
                     if cell.attachedView.superview == nil {
+                        print(textStorage)
+                        print("Adding subview from willProcessEditing with ViewAttachmentCell")
                         self.addSubview(cell.attachedView)
                     }
                 }
