@@ -77,7 +77,7 @@ enum AttachmentType {
         let data = try! encoder.encode(self)
         let wrapper = FileWrapper(regularFileWithContents: data)
         let uuid = UUID()
-        let filename = "\(uuid).tiff"
+        let filename = "\(uuid).fluencyattachment"
         wrapper.filename = filename
         wrapper.preferredFilename = filename
         return wrapper
@@ -282,8 +282,8 @@ final class CustomTextView: NSTextView {
 
     override func writeSelection(to pboard: NSPasteboard, type: NSPasteboard.PasteboardType) -> Bool {
         print("Writing selection of type \(type) to pasteboard...")
-//        if type == .fileContents {
-//            print("-- Trying to write file contents, selection is: \(self.selectedRange())")
+        if type == .fileContents {
+            print("-- Trying to write file contents, selection is: \(self.selectedRange())")
 //            self.textStorage?.enumerateAttribute(.attachment, in: self.selectedRange(), options: []) { value, range, stop in
 //                if let attachment = value as? NSTextAttachment {
 //                    print("Found an attachment...")
@@ -296,8 +296,17 @@ final class CustomTextView: NSTextView {
 //                    }
 //                }
 //            }
-//            return true
-//        }
+            do {
+                let fileWrapper = try self.textStorage!.fileWrapper(from: self.selectedRange(), documentAttributes: [.documentType: NSAttributedString.DocumentType.rtfd])
+                let uuid = UUID()
+                fileWrapper.preferredFilename = "\(uuid).fluencytextstorage"
+                pboard.write(fileWrapper)
+                return true
+            } catch let error {
+                print("Error: \(error)")
+                return false
+            }
+        }
         return super.writeSelection(to: pboard, type: type)
     }
 
@@ -312,8 +321,8 @@ final class CustomTextView: NSTextView {
 //            }
 //            return true
 //        }
-//        if type == NSPasteboard.PasteboardType.fileContents {
-//            print("Reading a file contents...")
+        if type == NSPasteboard.PasteboardType.fileContents {
+            print("Reading a file contents...")
 //            if let wrapper = pboard.readFileWrapper() {
 //                print("Found a file wrapper! \(wrapper)")
 //                let decoder = JSONDecoder()
@@ -327,8 +336,19 @@ final class CustomTextView: NSTextView {
 //            } else {
 //                return super.readSelection(from: pboard, type: type)
 //            }
-//            return true
-//        }
+            let wrapper = pboard.readFileWrapper()!
+//            print("We got a wrapper! isfile: \(wrapper.isRegularFile), isDir: \(wrapper.isDirectory), isSym: \(wrapper.isSymbolicLink)")
+//            if wrapper.isDirectory {
+//                print("It was a directory, here are the children: \(wrapper.fileWrappers)")
+//            }
+
+            guard let attributedString = NSAttributedString(rtfdFileWrapper: wrapper, documentAttributes: nil) else {
+                print("Error!! Could not create attributed string")
+                return false
+            }
+            self.textStorage?.insert(attributedString, at: self.selectedRange().location)
+            return true
+        }
 //        } else if type == NSPasteboard.PasteboardType(rawValue: "public.utf8-plain-text") {
             return super.readSelection(from: pboard, type: type)
 //        }
@@ -354,8 +374,19 @@ extension CustomTextView: NSTextStorageDelegate {
         print(self.textStorage)
         textStorage.enumerateAttribute(.attachment, in: NSMakeRange(0, textStorage.length), options: .longestEffectiveRangeNotRequired) { value, range, stop in
             if let attachment = value as? NSTextAttachment {
-                print("Found an NSTextAttachment...")
-                if let cell = attachment.attachmentCell as? ViewAttachmentCell {
+                if !(attachment.attachmentCell is ViewAttachmentCell),
+                    let wrapper = attachment.fileWrapper,
+                    let preferredFilename = wrapper.preferredFilename,
+                    preferredFilename.contains(".fluencyattachment") {
+                    print("Found some shit that I'm pretty sure is a fluency attachment!")
+                    let decoder = JSONDecoder()
+                    let content = try! decoder.decode(AttachmentType.self, from: wrapper.regularFileContents!)
+                    let attachmentCell = ViewAttachmentCell(content: content)
+                    attachment.attachmentCell = attachmentCell
+                    if attachmentCell.attachedView.superview == nil {
+                        self.addSubview(attachmentCell.attachedView)
+                    }
+                } else if let cell = attachment.attachmentCell as? ViewAttachmentCell {
                     print("-- Found a fancy ViewAttachmentCell at \(range)")
                     print("Cell: \(attachment.attachmentCell)")
                     if cell.attachedView.superview == nil {
