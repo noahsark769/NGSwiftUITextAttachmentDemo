@@ -1,3 +1,0 @@
-- When pasting, the attachment has extra padding around it
-- When copying, pasting into text edit should paste the text and an attachment
-- Copy then newline fucks it up

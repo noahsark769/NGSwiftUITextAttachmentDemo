@@ -13,7 +13,7 @@ import Combine
 
 struct RedSquareView: View, AttachmentTypeProducer {
     @State var number: Int = 0
-    @State var text: String = "This is fucking inside the text field my god"
+    @State var text: String = ""
 
     var body: some View {
         VStack {
@@ -212,23 +212,6 @@ extension AttachmentType: Codable {
 //    }
 //}
 
-final class AttachmentTypeWrapper: NSObject, NSPasteboardWriting {
-    let attachmentType: AttachmentType
-
-    init(attachmentType: AttachmentType) {
-        self.attachmentType = attachmentType
-    }
-
-    func writableTypes(for pasteboard: NSPasteboard) -> [NSPasteboard.PasteboardType] {
-        return [.string]
-    }
-
-    func pasteboardPropertyList(forType type: NSPasteboard.PasteboardType) -> Any? {
-        let encoder = JSONEncoder()
-        return try! encoder.encode(attachmentType)
-    }
-}
-
 final class TextViewDelegate: NSObject, NSTextViewDelegate {
     func textView(_ view: NSTextView, writablePasteboardTypesFor cell: NSTextAttachmentCellProtocol, at charIndex: Int) -> [NSPasteboard.PasteboardType] {
         return [.fileContents]
@@ -246,6 +229,7 @@ final class TextViewDelegate: NSObject, NSTextViewDelegate {
 
     func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
         print("Should change? \(affectedCharRange)")
+        print("Typing attributes: \(textView.typingAttributes)")
         if affectedCharRange.length > 0 && replacementString != nil {
             // We're deleting text, make sure to delete attachments too
             print("Deleting in affected range: \(affectedCharRange)")
@@ -257,6 +241,7 @@ final class TextViewDelegate: NSObject, NSTextViewDelegate {
                 }
             }
             textView.textStorage?.removeAttribute(.attachment, range: affectedCharRange)
+            textView.typingAttributes[.attachment] = nil
         }
         return true
     }
