@@ -14,8 +14,8 @@
             filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
             landmarkName = "drawGlyphs(forGlyphRange:at:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
             landmarkName = "drawGlyphs(forGlyphRange:at:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
             landmarkName = "cellFrame(for:proposedLineFragment:glyphPosition:characterIndex:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,8 +62,8 @@
             filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
             landmarkName = "unknown"
             landmarkType = "0">
          </BreakpointContent>
@@ -78,8 +78,8 @@
             filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "293"
-            endingLineNumber = "293"
+            startingLineNumber = "354"
+            endingLineNumber = "354"
             landmarkName = "textStorage(_:willProcessEditing:range:changeInLength:)"
             landmarkType = "7">
             <Locations>

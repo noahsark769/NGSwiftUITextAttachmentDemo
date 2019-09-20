@@ -9,23 +9,38 @@
 import Foundation
 import AppKit
 import SwiftUI
+import Combine
 
-struct RedSquareView: View, Codable {
-    let number: Int
+struct RedSquareView: View, AttachmentTypeProducer {
+    @State var number: Int = 0
+    @State var text: String = "This is fucking inside the text field my god"
 
     var body: some View {
-        Text("\(number)")
-            .frame(width: 50, height: 50)
+        VStack {
+            Text("\(number)")
+            Button(action: {
+                self.number += 1
+                self.didUpdateAttachmentType.send(.square(data: IntAndText(number: self.number, text: self.text)))
+            }, label: {
+                Text("Increment")
+            })
+            TextField("Field", text: self.$text, onEditingChanged: { _ in }, onCommit: {
+                self.didUpdateAttachmentType.send(.square(data: IntAndText(number: self.number, text: self.text)))
+            })
+        }.frame(width: 150)
             .background(Color.red)
         .padding(100)
             .background(Color.green.opacity(0.2))
     }
+
+    let didUpdateAttachmentType = PassthroughSubject<AttachmentType, Never>()
 }
 
 final class ViewAttachmentCell: NSTextAttachmentCell {
-    let content: AttachmentType
+    var content: AttachmentType
     let attachedView: NSView
     let viewController: NSViewController
+    private var cancellables = Set<AnyCancellable>()
 
     init(content: AttachmentType) {
         let viewController = content.createViewController()
@@ -33,14 +48,28 @@ final class ViewAttachmentCell: NSTextAttachmentCell {
         self.attachedView = viewController.view
         self.content = content
         super.init()
+
+        viewController.didUpdateAttachmentType.sink(receiveValue: { newAttachmentType in
+            self.content = newAttachmentType
+            self.attachment?.fileWrapper = self.content.asFileWrapper()
+        }).store(in: &self.cancellables)
     }
 
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func cellSize() -> NSSize {
+        return self.attachedView.fittingSize
+    }
+
     override func cellFrame(for textContainer: NSTextContainer, proposedLineFragment lineFrag: NSRect, glyphPosition position: NSPoint, characterIndex charIndex: Int) -> NSRect {
-        return NSRect(x: position.x, y: position.y, width: self.attachedView.fittingSize.width, height: self.attachedView.fittingSize.height)
+        print("Calling cellFrame for proposedLineFrag: \(lineFrag), glyphPosition: \(position), charIndex: \(charIndex)")
+        let rect = NSRect(x: position.x, y: position.y, width: self.attachedView.fittingSize.width, height: self.attachedView.fittingSize.height - position.y) // why do we have to minus the position here??
+        print("We have cellSize: \(self.cellSize())")
+        print("We have cellBaselineOffset: \(self.cellBaselineOffset())")
+        print("Returning cell frame: \(rect)")
+        return rect
     }
 }
 
@@ -55,20 +84,41 @@ final class ViewAttachmentLayoutManager: NSLayoutManager {
                     return
                 }
                 var boundingRect = self.boundingRect(forGlyphRange: range, in: textContainer)
-                attachmentCell.attachedView.frame = boundingRect
+                print("Bounding rect: \(boundingRect), origin: \(origin), range: \(range)")
+                // TODO NOAH: The bounding rect is in text container coordiantes!
+                print("Text container size: \(textContainer.containerSize)")
+                print("Text view size: \(textContainer.textView?.frame)")
+                print("Text container origin: \(textContainer.textView?.textContainerOrigin)")
+                let size = attachmentCell.attachedView.fittingSize
+                attachmentCell.attachedView.frame =  boundingRect
                 attachmentCell.attachedView.isHidden = false
             }
         }
     }
 }
 
-enum AttachmentType {
-    case square(number: Int)
+protocol AttachmentTypeProducer {
+    var didUpdateAttachmentType: PassthroughSubject<AttachmentType, Never> { get }
+}
 
-    func createViewController() -> NSViewController {
+extension NSHostingController: AttachmentTypeProducer where Content: AttachmentTypeProducer {
+    var didUpdateAttachmentType: PassthroughSubject<AttachmentType, Never> {
+        return self.rootView.didUpdateAttachmentType
+    }
+}
+
+struct IntAndText: Codable {
+    let number: Int
+    let text: String
+}
+
+enum AttachmentType {
+    case square(data: IntAndText)
+
+    func createViewController() -> NSViewController & AttachmentTypeProducer {
         switch self {
-        case let .square(number):
-            return NSHostingController(rootView: RedSquareView(number: number))
+        case let .square(data):
+            return NSHostingController(rootView: RedSquareView(number: data.number, text: data.text))
         }
     }
 
@@ -111,7 +161,7 @@ extension AttachmentType: Codable {
         }
         switch rawType {
         case .square:
-            self = .square(number: try container.decode(Int.self, forKey: .data))
+            self = .square(data: try container.decode(IntAndText.self, forKey: .data))
         }
     }
 
@@ -196,7 +246,7 @@ final class TextViewDelegate: NSObject, NSTextViewDelegate {
 
     func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
         print("Should change? \(affectedCharRange)")
-        if (replacementString ?? "").count == 0 {
+        if affectedCharRange.length > 0 && replacementString != nil {
             // We're deleting text, make sure to delete attachments too
             print("Deleting in affected range: \(affectedCharRange)")
             textView.textStorage?.enumerateAttribute(.attachment, in: affectedCharRange, options: []) { value, range, stop in
@@ -231,7 +281,7 @@ final class CustomTextView: NSTextView {
 
         self.textStorage?.append(NSAttributedString(string: "Hello world", attributes: [NSAttributedString.Key.foregroundColor: NSColor.labelColor]))
 
-        let content: AttachmentType = .square(number: 5)
+        let content: AttachmentType = .square(data: IntAndText(number: 5, text: "Nested Text Field"))
         let attachment = NSTextAttachment(fileWrapper: content.asFileWrapper())
         attachment.attachmentCell = ViewAttachmentCell(content: content)
         let string = NSAttributedString(attachment: attachment)
@@ -263,10 +313,10 @@ final class CustomTextView: NSTextView {
                 let uuid = UUID()
                 fileWrapper.preferredFilename = "\(uuid).fluencytextstorage"
                 pboard.write(fileWrapper)
-                return true
+                return super.writeSelection(to: pboard, type: type) // or true?
             } catch let error {
                 print("Error: \(error)")
-                return false
+                return super.writeSelection(to: pboard, type: type)
             }
         }
         return super.writeSelection(to: pboard, type: type)
@@ -276,12 +326,24 @@ final class CustomTextView: NSTextView {
         print("Reading selection of type \(type) from pasteboard...")
         if type == NSPasteboard.PasteboardType.fileContents {
             let wrapper = pboard.readFileWrapper()!
-            guard let attributedString = NSAttributedString(rtfdFileWrapper: wrapper, documentAttributes: nil) else {
-                print("Error!! Could not create attributed string")
-                return false
+            if wrapper.isRegularFile {
+                print("Was a regular file")
+            } else if wrapper.isDirectory {
+                print("Was a directory")
             }
-            self.textStorage?.insert(attributedString, at: self.selectedRange().location)
-            return true
+            if let attributedString = NSAttributedString(rtfdFileWrapper: wrapper, documentAttributes: nil) {
+                self.textStorage?.insert(attributedString, at: self.selectedRange().location)
+                return true
+            } else if wrapper.isRegularFile {
+                let decoder = JSONDecoder()
+                let content = try! decoder.decode(AttachmentType.self, from: wrapper.regularFileContents!)
+                let attachment = NSTextAttachment(fileWrapper: wrapper)
+                attachment.attachmentCell = ViewAttachmentCell(content: content)
+                let string = NSAttributedString(attachment: attachment)
+                self.textStorage?.insert(string, at: self.selectedRange().location)
+                return true
+            }
+            return super.readSelection(from: pboard, type: type)
         }
         return super.readSelection(from: pboard, type: type)
     }

@@ -32,8 +32,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         customTextView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         customTextView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         customTextView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 40).isActive = true
-        customTextView.widthAnchor.constraint(equalToConstant: 500).isActive = true
-        customTextView.heightAnchor.constraint(equalToConstant: 500).isActive = true
+        customTextView.widthAnchor.constraint(equalToConstant: 800).isActive = true
+        customTextView.heightAnchor.constraint(equalToConstant: 800).isActive = true
         let bottomConstraint = customTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         bottomConstraint.priority = .required
         bottomConstraint.isActive = true
