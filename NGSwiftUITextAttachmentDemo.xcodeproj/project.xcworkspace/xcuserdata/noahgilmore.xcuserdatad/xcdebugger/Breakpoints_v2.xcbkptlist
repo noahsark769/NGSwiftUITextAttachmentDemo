@@ -16,8 +16,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "93"
             endingLineNumber = "93"
-            landmarkName = "drawGlyphs(forGlyphRange:at:)"
-            landmarkType = "7">
+            landmarkName = "AttachmentTypeProducer"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -32,8 +32,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "94"
             endingLineNumber = "94"
-            landmarkName = "drawGlyphs(forGlyphRange:at:)"
-            landmarkType = "7">
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -55,22 +55,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "8E0164B4-175D-4C04-ACCD-1065F4F76294"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "197"
-            endingLineNumber = "197"
-            landmarkName = "unknown"
-            landmarkType = "0">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "AA608D32-0075-406A-80A5-168764781082"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -78,10 +62,8 @@
             filePath = "../NGSwiftUITextAttachmentDemo/CustomTextView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "339"
-            endingLineNumber = "339"
-            landmarkName = "textStorage(_:willProcessEditing:range:changeInLength:)"
-            landmarkType = "7">
+            startingLineNumber = "311"
+            endingLineNumber = "311">
             <Locations>
                <Location
                   uuid = "AA608D32-0075-406A-80A5-168764781082 - 9b199d8ca6ba2e90"

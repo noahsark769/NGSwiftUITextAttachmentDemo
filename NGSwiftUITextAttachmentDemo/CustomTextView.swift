@@ -64,11 +64,7 @@ final class ViewAttachmentCell: NSTextAttachmentCell {
     }
 
     override func cellFrame(for textContainer: NSTextContainer, proposedLineFragment lineFrag: NSRect, glyphPosition position: NSPoint, characterIndex charIndex: Int) -> NSRect {
-        print("Calling cellFrame for proposedLineFrag: \(lineFrag), glyphPosition: \(position), charIndex: \(charIndex)")
         let rect = NSRect(x: position.x, y: position.y, width: self.attachedView.fittingSize.width, height: self.attachedView.fittingSize.height - position.y) // why do we have to minus the position here??
-        print("We have cellSize: \(self.cellSize())")
-        print("We have cellBaselineOffset: \(self.cellBaselineOffset())")
-        print("Returning cell frame: \(rect)")
         return rect
     }
 }
@@ -84,11 +80,6 @@ final class ViewAttachmentLayoutManager: NSLayoutManager {
                     return
                 }
                 var boundingRect = self.boundingRect(forGlyphRange: range, in: textContainer)
-                print("Bounding rect: \(boundingRect), origin: \(origin), range: \(range)")
-                // TODO NOAH: The bounding rect is in text container coordiantes!
-                print("Text container size: \(textContainer.containerSize)")
-                print("Text view size: \(textContainer.textView?.frame)")
-                print("Text container origin: \(textContainer.textView?.textContainerOrigin)")
                 let size = attachmentCell.attachedView.fittingSize
                 attachmentCell.attachedView.frame =  boundingRect
                 attachmentCell.attachedView.isHidden = false
@@ -177,41 +168,6 @@ extension AttachmentType: Codable {
     }
 }
 
-//final class ViewAttachment: NSTextAttachment {
-//    let attachedView: NSView
-//    private let viewController: NSViewController
-//
-//    init(content: AttachmentType) {
-//        print("Initializing ViewAttachment from content")
-//        self.viewController = content.createViewController()
-//        self.attachedView = self.viewController.view
-//        let fileWrapper = content.asFileWrapper()
-//        super.init(data: fileWrapper.regularFileContents!, ofType: "com.noahgilmore.fluencytextdata")
-////        super.init(fileWrapper: fileWrapper)
-//        self.fileWrapper = fileWrapper
-//        self.attachmentCell = ViewAttachmentCell(content: content)
-//    }
-//
-//    override init(data contentData: Data?, ofType uti: String?) {
-//        print("Initializing ViewAttachment from data")
-//        guard let data = contentData, let uti = uti else { fatalError() }
-//        let decoder = JSONDecoder()
-//        let content = try! decoder.decode(AttachmentType.self, from: data)
-//        self.viewController = content.createViewController()
-//        self.attachedView = self.viewController.view
-//        super.init(data: contentData, ofType: uti)
-//        self.attachmentCell = ViewAttachmentCell(content: content)
-//    }
-//
-//    deinit {
-//        self.attachedView.removeFromSuperview()
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//}
-
 final class TextViewDelegate: NSObject, NSTextViewDelegate {
     func textView(_ view: NSTextView, writablePasteboardTypesFor cell: NSTextAttachmentCellProtocol, at charIndex: Int) -> [NSPasteboard.PasteboardType] {
         return [.fileContents]
@@ -219,24 +175,18 @@ final class TextViewDelegate: NSObject, NSTextViewDelegate {
 
     func textView(_ view: NSTextView, write cell: NSTextAttachmentCellProtocol, at charIndex: Int, to pboard: NSPasteboard, type: NSPasteboard.PasteboardType) -> Bool {
         if let cell = cell as? ViewAttachmentCell, type == .fileContents {
-            print("Writing cell content as file wrapper...")
             let result = pboard.write(cell.content.asFileWrapper())
-            print("Writing result: \(result)")
-            return true
+            return result
         }
         return true
     }
 
     func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
-        print("Should change? \(affectedCharRange)")
-        print("Typing attributes: \(textView.typingAttributes)")
         if affectedCharRange.length > 0 && replacementString != nil {
             // We're deleting text, make sure to delete attachments too
-            print("Deleting in affected range: \(affectedCharRange)")
             textView.textStorage?.enumerateAttribute(.attachment, in: affectedCharRange, options: []) { value, range, stop in
                 if let attachment = value as? NSTextAttachment,
                     let cell = attachment.attachmentCell as? ViewAttachmentCell {
-                    print("Deleting attachment at range: \(range)")
                     cell.attachedView.removeFromSuperview()
                 }
             }
@@ -261,7 +211,6 @@ final class CustomTextView: NSTextView {
         self.textColor = NSColor.labelColor
         self.delegate = self.theDelegate
         self.textStorage?.delegate = self
-        self.isRichText = true
         self.textContainer!.replaceLayoutManager(self.attachmentLayoutManager)
 
         self.textStorage?.append(NSAttributedString(string: "Hello world", attributes: [NSAttributedString.Key.foregroundColor: NSColor.labelColor]))
